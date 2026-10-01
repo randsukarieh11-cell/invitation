@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>موعد صغير 🌷</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at top,#fff,#fdebf3 70%,#f8dce8);overflow:hidden;color:#343034}
+.bg{position:fixed;inset:0;pointer-events:none}.bg span{position:absolute;opacity:.28;font-size:25px;animation:f 6s ease-in-out infinite}.a{top:10%;left:12%}.b{top:18%;right:9%;animation-delay:1s}.c{bottom:12%;left:10%;animation-delay:2s}.d{bottom:20%;right:12%;animation-delay:3s}
+.card{width:min(92vw,540px);min-height:540px;padding:34px 25px 28px;border-radius:30px;background:rgba(255,255,255,.94);box-shadow:0 20px 70px rgba(121,54,86,.18);display:flex;flex-direction:column;justify-content:center;text-align:center}
+.progress{color:#d7789f;letter-spacing:6px;font-size:13px;margin-bottom:30px}
+.screen{display:none;animation:in .35s ease}.screen.on{display:block}
+.flower{font-size:44px;margin-bottom:8px}h1{font-size:clamp(28px,7vw,40px);line-height:1.4;margin:0 0 14px}p{font-size:17px;color:#777;line-height:1.8;margin:0 auto 28px;white-space:pre-line}
+.actions{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}.btn{font:inherit;font-size:17px;border-radius:999px;padding:14px 29px;cursor:pointer;min-width:125px;border:1px solid #e2d7dc;background:#fff;color:#555;-webkit-tap-highlight-color:transparent}.btn:active{transform:scale(.97)}.yes{background:#df709d;border-color:#df709d;color:white;box-shadow:0 9px 22px rgba(223,112,157,.25)}
+.option{display:block;width:min(100%,340px);margin:10px auto}.tiny{font-size:14px;color:#aaa;margin-top:22px}
+@keyframes in{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}@keyframes f{50%{transform:translateY(-14px) rotate(7deg)}}
+</style>
+</head>
+<body>
+<div class="bg"><span class="a">🌸</span><span class="b">🌷</span><span class="c">🌸</span><span class="d">🌷</span></div>
+<main class="card">
+<div class="progress" id="progress">• • • —</div>
+
+<section class="screen on" id="s1">
+<div class="flower">🌸</div>
+<h1>هل تريد الخروج معي في موعد؟</h1>
+<p>سؤال واحد فقط... والبقية أسهل مما تتوقع. 🌷</p>
+<div class="actions">
+<button class="btn" type="button" id="no">👋 لا</button>
+<button class="btn yes" type="button" id="yes">🤍 حسنًا</button>
+</div>
+<div class="tiny" id="hint">خذ وقتك... لا يوجد استعجال.</div>
+</section>
+
+<section class="screen" id="s2">
+<div class="flower">☕</div><h1>إذن اتفقنا! 🌷</h1>
+<p>ماذا تفضّل أن نفعل؟</p>
+<button class="btn option" type="button" data-next="3" data-choice="غداء 🍝">🍝 غداء</button>
+<button class="btn option" type="button" data-next="3" data-choice="قهوة وحلو ☕">☕ قهوة وحلو</button>
+<button class="btn option" type="button" data-next="3" data-choice="نزهة 🌸">🌸 نزهة</button>
+</section>
+
+<section class="screen" id="s3">
+<div class="flower">📅</div><h1>ومتى يناسبك؟</h1>
+<p>اختَر اليوم الذي يناسبك:</p>
+<button class="btn option" type="button" data-next="4" data-day="الجمعة">🌷 الجمعة</button>
+<button class="btn option" type="button" data-next="4" data-day="السبت">🌷 السبت</button>
+<button class="btn option" type="button" data-next="4" data-day="وقت آخر">💌 وقت آخر</button>
+</section>
+
+<section class="screen" id="s4">
+<div class="flower">💗</div><h1>تم الاتفاق! 🌸</h1>
+<p id="result">موعد لطيف بانتظارنا.</p>
+<button class="btn yes" type="button" id="restart">↩︎ من البداية</button>
+</section>
+</main>
+
+<script>
+(function(){
+  let choice="", day="";
+  const screens=[1,2,3,4];
+  function go(n){
+    screens.forEach(i=>document.getElementById("s"+i).classList.remove("on"));
+    document.getElementById("s"+n).classList.add("on");
+    document.getElementById("progress").textContent =
+      n===4 ? "• • • ✓" : Array(n-1).fill("•").join(" ")+" — "+Array(4-n).fill("•").join(" ");
+  }
+  document.getElementById("yes").addEventListener("click",()=>go(2));
+  document.getElementById("no").addEventListener("click",()=>{
+    document.getElementById("hint").textContent="ولا يهمك 🌷 القرار إلك.";
+  });
+  document.querySelectorAll('[data-choice]').forEach(b=>b.addEventListener("click",()=>{
+    choice=b.dataset.choice; go(3);
+  }));
+  document.querySelectorAll('[data-day]').forEach(b=>b.addEventListener("click",()=>{
+    day=b.dataset.day;
+    document.getElementById("result").textContent="اختيارك: "+choice+" — "+day+" 🌷\nباقي فقط نحدد الوقت والمكان.";
+    go(4);
+  }));
+  document.getElementById("restart").addEventListener("click",()=>{choice="";day="";go(1)});
+})();
+</script>
+</body>
+</html>
